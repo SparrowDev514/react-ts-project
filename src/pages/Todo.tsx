@@ -4,9 +4,10 @@ function Todo() {
       ここにTODO LISTを作るぞ.
       <form>
         <input type="text" name="wantToBuy" />
+        <button type="submit">TODO追加</button>
       </form>
       <hr></hr>
-      <div></div>
+      <div>ここにリストを表示</div>
     </div>
   );
 }
