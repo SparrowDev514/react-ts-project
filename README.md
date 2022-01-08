@@ -3,7 +3,9 @@
 ## TODO
 
 - [x] 何作るか考える
-- [ ] TODO リスト作る
+- [ ] 買いたい物 リスト作る
+  - [ ] `GET http://localhost:4000/favicon.ico 404 (Not Found)`エラーを消す
+  - [ ] 型をまともにする
 - [ ] Google 検索を API でできないか調べる
 
 ## 作るもの検討

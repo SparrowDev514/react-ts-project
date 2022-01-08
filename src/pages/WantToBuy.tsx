@@ -1,13 +1,9 @@
 import { useState } from "react";
 
-const Todo = () => {
+const WantToBuy = () => {
   const [idCounter, setIdCounter] = useState<number>(0);
   const [wantToBuys, setWantToBuy] = useState<Object[]>([]);
 
-  /**
-   * フォーム送信したらtodo配列にtodoを追加
-   * @param {Event} e 送信イベント
-   */
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const inputText: String = e.target["wantToBuy"].value;
@@ -17,11 +13,11 @@ const Todo = () => {
   };
 
   return (
-    <div className="Todo">
-      ここにTODO LISTを作るぞ.
+    <div className="WantToBuy">
+      ここに買いたい物リストを作るぞ.
       <form onSubmit={handleSubmit}>
         <input name="wantToBuy" />
-        <button>TODO追加</button>
+        <button>買いたい物を追加</button>
       </form>
       <hr></hr>
       <div>ここにリストを表示</div>
@@ -33,5 +29,5 @@ const Todo = () => {
     </div>
   );
 };
-// これは追加分です
-export default Todo;
+
+export default WantToBuy;

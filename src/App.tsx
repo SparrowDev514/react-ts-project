@@ -1,12 +1,12 @@
 import { useState } from "react";
 import "./App.css";
-import Todo from "./pages/Todo";
+import WantToBuy from "./pages/WantToBuy";
 
 function App() {
   return (
     <div className="App">
       <h1>ここに色々書くぞ</h1>
-      <Todo />
+      <WantToBuy />
     </div>
   );
 }
