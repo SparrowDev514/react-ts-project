@@ -7,6 +7,10 @@ const WantToBuy = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const inputText: String = e.target["wantToBuy"].value;
+
+    // 文字列からの時はさっさと抜ける
+    if (inputText === "") return;
+
     const nextid: number = idCounter + 1;
     setIdCounter(nextid);
     setWantToBuy([...wantToBuyList, { id: nextid, item: inputText }]);
@@ -20,10 +24,12 @@ const WantToBuy = () => {
         <button>買いたい物を追加</button>
       </form>
       <hr></hr>
-      <div>ここにリストを表示</div>
+      <div>ここにリストを表示するぞ</div>
       <div>
         {wantToBuyList.map((wantToBuy: any) => (
-          <li key={wantToBuy.id}>{wantToBuy.item}</li>
+          <li key={wantToBuy.id}>
+            {wantToBuy.id} : {wantToBuy.item}
+          </li>
         ))}
       </div>
     </div>
