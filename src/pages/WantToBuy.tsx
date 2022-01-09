@@ -2,14 +2,14 @@ import { useState } from "react";
 
 const WantToBuy = () => {
   const [idCounter, setIdCounter] = useState<number>(0);
-  const [wantToBuys, setWantToBuy] = useState<Object[]>([]);
+  const [wantToBuyList, setWantToBuy] = useState<Object[]>([]);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const inputText: String = e.target["wantToBuy"].value;
     const nextid: number = idCounter + 1;
     setIdCounter(nextid);
-    setWantToBuy([...wantToBuys, { id: nextid, item: inputText }]);
+    setWantToBuy([...wantToBuyList, { id: nextid, item: inputText }]);
   };
 
   return (
@@ -22,7 +22,7 @@ const WantToBuy = () => {
       <hr></hr>
       <div>ここにリストを表示</div>
       <div>
-        {wantToBuys.map((wantToBuy: any) => (
+        {wantToBuyList.map((wantToBuy: any) => (
           <li key={wantToBuy.id}>{wantToBuy.item}</li>
         ))}
       </div>
