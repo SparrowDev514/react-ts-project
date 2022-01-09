@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const WantToBuy = () => {
   const [idCounter, setIdCounter] = useState<number>(0);
-  const [wantToBuyList, setWantToBuy] = useState<Object[]>([]);
+  const [wantToBuyList, setWantToBuy] = useState<object[]>([]);
 
   const handleSubmit = (
     e:
@@ -10,14 +10,14 @@ const WantToBuy = () => {
       | {
           preventDefault: () => void;
           target: {
-            [x: string]: { value: String };
+            [x: string]: { value: string };
           };
         }
   ) => {
     e.preventDefault();
     if ("wantToBuy" in e.target) {
       if (!e.target["wantToBuy"].value) return;
-      const inputText: String = e.target["wantToBuy"].value;
+      const inputText: string = e.target["wantToBuy"].value;
       const nextid: number = idCounter + 1;
       setIdCounter(nextid);
       setWantToBuy([...wantToBuyList, { id: nextid, item: inputText }]);
