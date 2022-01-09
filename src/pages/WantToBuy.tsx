@@ -4,16 +4,24 @@ const WantToBuy = () => {
   const [idCounter, setIdCounter] = useState<number>(0);
   const [wantToBuyList, setWantToBuy] = useState<Object[]>([]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | {
+          preventDefault: () => void;
+          target: {
+            [x: string]: { value: String };
+          };
+        }
+  ) => {
     e.preventDefault();
-    const inputText: String = e.target["wantToBuy"].value;
-
-    // 文字列からの時はさっさと抜ける
-    if (inputText === "") return;
-
-    const nextid: number = idCounter + 1;
-    setIdCounter(nextid);
-    setWantToBuy([...wantToBuyList, { id: nextid, item: inputText }]);
+    if ("wantToBuy" in e.target) {
+      if (!e.target["wantToBuy"].value) return;
+      const inputText: String = e.target["wantToBuy"].value;
+      const nextid: number = idCounter + 1;
+      setIdCounter(nextid);
+      setWantToBuy([...wantToBuyList, { id: nextid, item: inputText }]);
+    }
   };
 
   return (
