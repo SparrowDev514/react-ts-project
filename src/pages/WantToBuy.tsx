@@ -4,7 +4,7 @@ const WantToBuy = () => {
   const [idCounter, setIdCounter] = useState<number>(0);
   const [wantToBuyList, setWantToBuy] = useState<object[]>([]);
 
-  const handleSubmit = (
+  const addWantToBuy = (
     e:
       | React.FormEvent<HTMLFormElement>
       | {
@@ -24,10 +24,12 @@ const WantToBuy = () => {
     }
   };
 
+  const deleteWantTobuy = () => {};
+
   return (
     <div className="WantToBuy">
       ここに買いたい物リストを作るぞ.
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={addWantToBuy}>
         <input name="wantToBuy" />
         <button>買いたい物を追加</button>
       </form>
