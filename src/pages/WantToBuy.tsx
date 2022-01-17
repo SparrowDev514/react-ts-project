@@ -33,7 +33,7 @@ const WantToBuy = () => {
         <input name="wantToBuy" />
         <button>買いたい物を追加</button>
       </form>
-      <hr></hr>
+      <hr />
       <div>ここにリストを表示するぞ</div>
       <div>
         {wantToBuyList.map((wantToBuy: any) => (
