@@ -11,9 +11,9 @@ const App: VFC = () => {
       <div>
         <nav>
           <ul>
-            <li>
+            {/* <li>
               <Link to="/">Home</Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/wantToBuy">WantToBuy</Link>
             </li>
