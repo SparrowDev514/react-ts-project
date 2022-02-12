@@ -10,6 +10,9 @@ const LifeGame = () => {
   //最初に発生させる生命の割合
   const initialRate: number = 0.5;
 
+  //step
+  let step: number = 0;
+
   // LifeGameStateを乱数で初期化
   const initializeState = () => {
     for (let i = 0; i < verticalNum; i++) {
@@ -23,13 +26,20 @@ const LifeGame = () => {
   };
 
   // 配列の状況に応じて値を返す
-  const returnState = (i: number, j: number) => {
-    if (LifeGameState[i][j] > initialRate) {
-      return "";
+  const returnState = (i: number, j: number, step: number) => {
+    if (step == 0) {
+      if (LifeGameState[i][j] > initialRate) {
+        return "";
+      } else {
+        return "●";
+      }
     } else {
-      return "●";
+      //１世代以降の処理
     }
   };
+
+  //世代を進める
+  const nextState = () => {};
 
   initializeState();
 
@@ -41,7 +51,7 @@ const LifeGame = () => {
       for (let j = 0; j < horizonalNum; j++) {
         square.push(
           <button className="Square" key={j}>
-            {returnState(i, j)}
+            {returnState(i, j, step)}
           </button>
         );
       }
