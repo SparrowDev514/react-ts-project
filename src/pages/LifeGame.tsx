@@ -1,6 +1,8 @@
+import { useState } from "react";
+
 const LifeGame = () => {
   let square: object[] = [];
-  let div: object[] = [];
+  let row: object[] = [];
   let horizonalNum: number = 20;
   let verticalNum: number = 10;
 
@@ -9,40 +11,45 @@ const LifeGame = () => {
   let nextLifeGameState: string[][] = [];
 
   //最初に発生させる生命の割合
-  const initialRate: number = 0.5;
+  const initialRate: number = 0.1;
 
   //step
-  let step: number = 0;
-
+  // let step: number = 0;
+  const [step, setStep] = useState<number>(0);
   // lifeGameStateを乱数で初期化
   const initializeState = () => {
     for (let i = 0; i < verticalNum; i++) {
-      let row: string[] = [];
+      let initialRow: string[] = [];
       for (let j = 0; j < horizonalNum; j++) {
         if (Math.random() > initialRate) {
-          row.push("");
+          initialRow.push("");
         } else {
-          row.push("●");
+          initialRow.push("●");
         }
       }
-      lifeGameState.push(row);
+      lifeGameState.push(initialRow);
     }
     return lifeGameState;
   };
   const initializeNextState = () => {
     for (let i = 0; i < verticalNum; i++) {
-      let row: string[] = [];
+      let initialRow: string[] = [];
       for (let j = 0; j < horizonalNum; j++) {
-        row.push("");
+        initialRow.push("");
       }
-      nextLifeGameState.push(row);
+      nextLifeGameState.push(initialRow);
     }
     return nextLifeGameState;
   };
 
+  // 初期化
+  initializeState();
+  initializeNextState();
+
   //世代を進める
   const nextState = () => {
-    step = step + 1;
+    const nextStep: number = step + 1;
+    setStep(nextStep);
     createLifeGameBoard(step);
   };
 
@@ -90,11 +97,7 @@ const LifeGame = () => {
           nextLifeGameState[i][j] = "●";
           return "●";
         }
-        if (liveCellNum <= 1) {
-          nextLifeGameState[i][j] = "";
-          return "";
-        }
-        if (liveCellNum <= 4) {
+        if (liveCellNum <= 1 || liveCellNum >= 4) {
           nextLifeGameState[i][j] = "";
           return "";
         }
@@ -114,7 +117,7 @@ const LifeGame = () => {
           </button>
         );
       }
-      div.push(
+      row.push(
         <div className="SquareRow" key={i}>
           {square}
         </div>
@@ -123,12 +126,8 @@ const LifeGame = () => {
     if (step != 0) {
       lifeGameState = nextLifeGameState;
     }
-    return div;
+    return row;
   };
-
-  // 初期化
-  initializeState();
-  initializeNextState();
 
   return (
     <div className="lifeGame">
