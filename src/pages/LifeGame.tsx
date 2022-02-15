@@ -6,6 +6,7 @@ const LifeGame = () => {
 
   // ライフゲームの状況を保持する定数
   let lifeGameState: string[][] = [];
+  let nextLifeGameState: string[][] = [];
 
   //最初に発生させる生命の割合
   const initialRate: number = 0.5;
@@ -27,6 +28,16 @@ const LifeGame = () => {
       lifeGameState.push(row);
     }
     return lifeGameState;
+  };
+  const initializeNextState = () => {
+    for (let i = 0; i < verticalNum; i++) {
+      let row: string[] = [];
+      for (let j = 0; j < horizonalNum; j++) {
+        row.push("");
+      }
+      nextLifeGameState.push(row);
+    }
+    return nextLifeGameState;
   };
 
   //世代を進める
@@ -66,7 +77,28 @@ const LifeGame = () => {
         lower,
         lowerRight,
       ];
-      console.log(neighborhoods);
+      let liveCellNum: number = neighborhoods.filter(
+        (neighborhood) => neighborhood == "●"
+      ).length;
+
+      if (lifeGameState[i][j] == "" && liveCellNum == 3) {
+        nextLifeGameState[i][j] = "●";
+        return "●";
+      }
+      if (lifeGameState[i][j] == "●") {
+        if (liveCellNum == 2 || liveCellNum == 3) {
+          nextLifeGameState[i][j] = "●";
+          return "●";
+        }
+        if (liveCellNum <= 1) {
+          nextLifeGameState[i][j] = "";
+          return "";
+        }
+        if (liveCellNum <= 4) {
+          nextLifeGameState[i][j] = "";
+          return "";
+        }
+      }
     }
   };
 
@@ -88,14 +120,20 @@ const LifeGame = () => {
         </div>
       );
     }
+    if (step != 0) {
+      lifeGameState = nextLifeGameState;
+    }
     return div;
   };
 
   // 初期化
   initializeState();
+  initializeNextState();
+
   return (
     <div className="lifeGame">
       <div className="lifeGameBoard">{createLifeGameBoard(step)}</div>
+      <div className="stepNum">{step}</div>
       <div>
         <button className="nextStepButton" onClick={nextState}>
           進める
