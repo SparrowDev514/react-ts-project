@@ -50,70 +50,75 @@ const LifeGame = () => {
   const nextState = () => {
     const nextStep: number = step + 1;
     setStep(nextStep);
-    createLifeGameBoard(step);
+    // createLifeGameBoard(step);
   };
 
   // 配列の状況に応じて値を返す
   const returnState = (i: number, j: number, step: number) => {
-    if (step == 0) {
-      return lifeGameState[i][j];
-    } else {
-      //１世代以降の処理
-      // 八近傍の状況
-      let upperLeft = i == 0 || j == 0 ? "" : lifeGameState[i - 1][j - 1];
-      let upper = i == 0 ? "" : lifeGameState[i - 1][j];
-      let upperRight =
-        i == 0 || j == horizonalNum - 1 ? "" : lifeGameState[i - 1][j + 1];
-      let left = j == 0 ? "" : lifeGameState[i][j - 1];
-      let right = j == horizonalNum - 1 ? "" : lifeGameState[i][j + 1];
-      let lowerLeft =
-        i == verticalNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
-      let lower = i == verticalNum - 1 ? "" : lifeGameState[i + 1][j];
-      let lowerRight =
-        i == verticalNum - 1 || j == horizonalNum - 1
-          ? ""
-          : lifeGameState[i + 1][j + 1];
-      // 八近傍の状況をまとめた配列
-      let neighborhoods = [
-        upperLeft,
-        upper,
-        upperRight,
-        left,
-        right,
-        lowerLeft,
-        lower,
-        lowerRight,
-      ];
-      let liveCellNum: number = neighborhoods.filter(
-        (neighborhood) => neighborhood == "●"
-      ).length;
+    // if (step == 0) {
+    //   return lifeGameState[i][j];
+    // } else {
+    //１世代以降の処理
+    // 八近傍の状況
+    let upperLeft = i == 0 || j == 0 ? "" : lifeGameState[i - 1][j - 1];
+    let upper = i == 0 ? "" : lifeGameState[i - 1][j];
+    let upperRight =
+      i == 0 || j == horizonalNum - 1 ? "" : lifeGameState[i - 1][j + 1];
+    let left = j == 0 ? "" : lifeGameState[i][j - 1];
+    let right = j == horizonalNum - 1 ? "" : lifeGameState[i][j + 1];
+    let lowerLeft =
+      i == verticalNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
+    let lower = i == verticalNum - 1 ? "" : lifeGameState[i + 1][j];
+    let lowerRight =
+      i == verticalNum - 1 || j == horizonalNum - 1
+        ? ""
+        : lifeGameState[i + 1][j + 1];
+    // 八近傍の状況をまとめた配列
+    let neighborhoods = [
+      upperLeft,
+      upper,
+      upperRight,
+      left,
+      right,
+      lowerLeft,
+      lower,
+      lowerRight,
+    ];
+    let liveCellNum: number = neighborhoods.filter(
+      (neighborhood) => neighborhood == "●"
+    ).length;
 
-      if (lifeGameState[i][j] == "" && liveCellNum == 3) {
+    if (lifeGameState[i][j] == "" && liveCellNum == 3) {
+      nextLifeGameState[i][j] = "●";
+      return "●";
+    } else if (lifeGameState[i][j] == "●") {
+      if (liveCellNum == 2 || liveCellNum == 3) {
         nextLifeGameState[i][j] = "●";
         return "●";
       }
-      if (lifeGameState[i][j] == "●") {
-        if (liveCellNum == 2 || liveCellNum == 3) {
-          nextLifeGameState[i][j] = "●";
-          return "●";
-        }
-        if (liveCellNum <= 1 || liveCellNum >= 4) {
-          nextLifeGameState[i][j] = "";
-          return "";
-        }
+      if (liveCellNum <= 1 || liveCellNum >= 4) {
+        nextLifeGameState[i][j] = "";
+        return "";
       }
+    } else {
+      return nextLifeGameState[i][j];
     }
+    // }
   };
 
   // ライフゲームの板を描写する
   const createLifeGameBoard = (step: number) => {
+    console.log("nextLifeGameState", nextLifeGameState);
+    console.log("lifeGameState", lifeGameState);
+    console.log("step", step);
     for (let i = 0; i < verticalNum; i++) {
       // forで回すとき都度都度配列初期化する
       square = [];
       for (let j = 0; j < horizonalNum; j++) {
         square.push(
           <button className="Square" key={j}>
-            {returnState(i, j, step)}
+            {/* {returnState(i, j, step)} */}
+            {lifeGameState[i][j]}
           </button>
         );
       }
@@ -129,6 +134,7 @@ const LifeGame = () => {
     return row;
   };
 
+  // オートの時 終わらないようなやり方を考える
   return (
     <div className="lifeGame">
       <div className="lifeGameBoard">{createLifeGameBoard(step)}</div>
