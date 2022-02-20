@@ -10,7 +10,7 @@ let lifeGameState: string[][] = [];
 let nextLifeGameState: string[][] = [];
 
 //最初に発生させる生命の割合
-const initialRate: number = 0.1;
+const initialRate: number = 0.5;
 
 // lifeGameStateを乱数で初期化
 const initializeState = () => {
@@ -107,9 +107,11 @@ const LifeGame = () => {
 
   // ライフゲームの板を描写する
   const createLifeGameBoard = (step: number) => {
+    // forで回すとき都度都度配列初期化する
+    let row = [];
     for (let i = 0; i < verticalNum; i++) {
       // forで回すとき都度都度配列初期化する
-      square = [];
+      let square = [];
       for (let j = 0; j < horizonalNum; j++) {
         square.push(
           <button className="Square" key={j}>
