@@ -1,9 +1,7 @@
 import { useState } from "react";
 
-let square: object[] = [];
-let row: object[] = [];
-let horizonalNum: number = 10;
-let verticalNum: number = 10;
+let horizonalNum: number = 20;
+let verticalNum: number = 20;
 
 // ライフゲームの状況を保持する定数
 let lifeGameState: string[][] = [];
@@ -134,16 +132,19 @@ const LifeGame = () => {
   // オートの時 終わらないようなやり方を考える
   return (
     <div className="lifeGame">
-      <div className="lifeGameBoard">{createLifeGameBoard(step)}</div>
-      <div className="stepNum">{step}</div>
-      <div>
+      <div className="lifeGameBoard">
+        {createLifeGameBoard(step)}
+        <div className="stepNum">{step}</div>
+      </div>
+
+      <span>
         <button className="nextStepButton" onClick={nextState}>
           進める
         </button>
-      </div>
-      <div>
+      </span>
+      <span>
         <button className="autoStep">オート</button>
-      </div>
+      </span>
     </div>
   );
 };
