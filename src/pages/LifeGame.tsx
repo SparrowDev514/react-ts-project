@@ -140,6 +140,11 @@ const LifeGame = () => {
   };
   const nextStepButtonStyle = {
     padding: "10px",
+    margin: "10px",
+  };
+  const autoStepButtonStyle = {
+    padding: "10px",
+    margin: "10px",
   };
   // TODO:オートの時 終わらないようなやり方を考える
   return (
@@ -147,13 +152,21 @@ const LifeGame = () => {
       <div className="lifeGameBoard" style={lifeGameBoardStyle}>
         {createLifeGameBoard(step)}
       </div>
-      <div className="stepNum" style={stepNumStyle}>
-        {step}
+      <div>
+        <div className="stepNum" style={stepNumStyle}>
+          第{step}世代
+        </div>
+        <button
+          className="nextStepButton"
+          style={nextStepButtonStyle}
+          onClick={nextState}
+        >
+          進める
+        </button>
+        <button className="autoStepButton" style={autoStepButtonStyle}>
+          オート
+        </button>
       </div>
-      <button className="nextStepButton" onClick={nextState}>
-        進める
-      </button>
-      <button className="autoStep">オート</button>
     </div>
   );
 };
