@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import WantToBuy from "../pages/WantToBuy";
 import CommitCounter from "../pages/CommitCounter";
-import FakeTwitter from "../pages/FakeTwitter";
+import TwitterManagement from "../pages/TwitterManagement";
 import LifeGame from "../pages/LifeGame";
 const Nav: VFC = () => {
   return (
@@ -21,7 +21,7 @@ const Nav: VFC = () => {
               <Link to="/commitCounter">CommitCounter</Link>
             </li>
             <li>
-              <Link to="/fakeTwitter">FakeTwitter</Link>
+              <Link to="/TwitterManagement">TwitterManagement</Link>
             </li>
             <li>
               <Link to="/lifeGame">LifeGame</Link>
@@ -32,7 +32,7 @@ const Nav: VFC = () => {
         <Routes>
           <Route path="/wantToBuy" element={<WantToBuy />} />
           <Route path="/commitCounter" element={<CommitCounter />} />
-          <Route path="/fakeTwitter" element={<FakeTwitter />} />
+          <Route path="/TwitterManagement" element={<TwitterManagement />} />
           <Route path="/lifeGame" element={<LifeGame />} />
         </Routes>
       </div>

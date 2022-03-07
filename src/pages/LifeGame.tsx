@@ -129,6 +129,7 @@ const LifeGame = () => {
     return row;
   };
 
+  // TODO: CSSを後で分離する;
   const lifeGameStyle = {
     display: "flex",
   };
