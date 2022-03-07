@@ -129,22 +129,31 @@ const LifeGame = () => {
     return row;
   };
 
-  // オートの時 終わらないようなやり方を考える
+  const lifeGameStyle = {
+    display: "flex",
+  };
+  const lifeGameBoardStyle = {
+    padding: "10px",
+  };
+  const stepNumStyle = {
+    padding: "10px",
+  };
+  const nextStepButtonStyle = {
+    padding: "10px",
+  };
+  // TODO:オートの時 終わらないようなやり方を考える
   return (
-    <div className="lifeGame">
-      <div className="lifeGameBoard">
+    <div className="lifeGame" style={lifeGameStyle}>
+      <div className="lifeGameBoard" style={lifeGameBoardStyle}>
         {createLifeGameBoard(step)}
-        <div className="stepNum">{step}</div>
       </div>
-
-      <span>
-        <button className="nextStepButton" onClick={nextState}>
-          進める
-        </button>
-      </span>
-      <span>
-        <button className="autoStep">オート</button>
-      </span>
+      <div className="stepNum" style={stepNumStyle}>
+        {step}
+      </div>
+      <button className="nextStepButton" onClick={nextState}>
+        進める
+      </button>
+      <button className="autoStep">オート</button>
     </div>
   );
 };
