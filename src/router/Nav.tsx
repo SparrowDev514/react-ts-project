@@ -23,7 +23,7 @@ const Nav: VFC = () => {
               <Link to="/commitCounter">CommitCounter</Link>
             </li>
             <li>
-              <Link to="/TwitterManagement">TwitterManagement</Link>
+              <Link to="/twitterManagement">TwitterManagement</Link>
             </li>
             <li>
               <Link to="/lifeGame">LifeGame</Link>
@@ -37,7 +37,7 @@ const Nav: VFC = () => {
         <Routes>
           <Route path="/wantToBuy" element={<WantToBuy />} />
           <Route path="/commitCounter" element={<CommitCounter />} />
-          <Route path="/TwitterManagement" element={<TwitterManagement />} />
+          <Route path="/twitterManagement" element={<TwitterManagement />} />
           <Route path="/lifeGame" element={<LifeGame />} />
           <Route path="/cardGameMemo" element={<CardGameMemo />} />
         </Routes>
