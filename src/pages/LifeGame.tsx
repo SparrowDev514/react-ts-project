@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-let horizonalNum: number = 20;
-let verticalNum: number = 20;
+let horizonalNum: number = 15;
+let verticalNum: number = 15;
 
 // ライフゲームの状況を保持する定数
 let lifeGameState: string[][] = [];
@@ -40,6 +40,9 @@ const initializeNextState = () => {
 initializeState();
 initializeNextState();
 
+const sleep = (waitTime: number | undefined) =>
+  new Promise((resolve) => setTimeout(resolve, waitTime));
+
 const LifeGame = () => {
   //step
   const [step, setStep] = useState<number>(0);
@@ -48,6 +51,13 @@ const LifeGame = () => {
   const nextState = () => {
     const nextStep: number = step + 1;
     setStep(nextStep);
+  };
+
+  const auto = async () => {
+    for (let i = 0; i <= 100; i++) {
+      await sleep(100);
+      setStep(i);
+    }
   };
 
   // 配列の状況に応じて値を返す
@@ -164,7 +174,11 @@ const LifeGame = () => {
         >
           進める
         </button>
-        <button className="autoStepButton" style={autoStepButtonStyle}>
+        <button
+          className="autoStepButton"
+          onClick={auto}
+          style={autoStepButtonStyle}
+        >
           オート
         </button>
       </div>
