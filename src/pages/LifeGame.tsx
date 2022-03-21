@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-let horizonalNum: number = 15;
-let verticalNum: number = 15;
+let horizonalNum: number = 20;
+let verticalNum: number = 20;
 
 // ライフゲームの状況を保持する定数
 let lifeGameState: string[][] = [];
@@ -54,7 +54,7 @@ const LifeGame = () => {
   };
 
   const auto = async () => {
-    for (let i = 0; i <= 100; i++) {
+    for (let i = 0; i <= 10000; i++) {
       await sleep(100);
       setStep(i);
     }
