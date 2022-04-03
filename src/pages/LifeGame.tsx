@@ -1,19 +1,19 @@
 import { useState } from "react";
 
-let horizonalNum: number = 20;
-let verticalNum: number = 20;
+const horizonalNum = 20;
+const verticalNum = 20;
 
 // ライフゲームの状況を保持する定数
 let lifeGameState: string[][] = [];
-let nextLifeGameState: string[][] = [];
+const nextLifeGameState: string[][] = [];
 
 //最初に発生させる生命の割合
-const initialRate: number = 0.5;
+const initialRate = 0.5;
 
 // lifeGameStateを乱数で初期化
 const initializeState = () => {
   for (let i = 0; i < verticalNum; i++) {
-    let initialRow: string[] = [];
+    const initialRow: string[] = [];
     for (let j = 0; j < horizonalNum; j++) {
       if (Math.random() > initialRate) {
         initialRow.push("");
@@ -27,7 +27,7 @@ const initializeState = () => {
 };
 const initializeNextState = () => {
   for (let i = 0; i < verticalNum; i++) {
-    let initialRow: string[] = [];
+    const initialRow: string[] = [];
     for (let j = 0; j < horizonalNum; j++) {
       initialRow.push("");
     }
@@ -67,21 +67,21 @@ const LifeGame = () => {
     } else {
       //１世代以降の処理
       // 八近傍の状況
-      let upperLeft = i == 0 || j == 0 ? "" : lifeGameState[i - 1][j - 1];
-      let upper = i == 0 ? "" : lifeGameState[i - 1][j];
-      let upperRight =
+      const upperLeft = i == 0 || j == 0 ? "" : lifeGameState[i - 1][j - 1];
+      const upper = i == 0 ? "" : lifeGameState[i - 1][j];
+      const upperRight =
         i == 0 || j == horizonalNum - 1 ? "" : lifeGameState[i - 1][j + 1];
-      let left = j == 0 ? "" : lifeGameState[i][j - 1];
-      let right = j == horizonalNum - 1 ? "" : lifeGameState[i][j + 1];
-      let lowerLeft =
+      const left = j == 0 ? "" : lifeGameState[i][j - 1];
+      const right = j == horizonalNum - 1 ? "" : lifeGameState[i][j + 1];
+      const lowerLeft =
         i == verticalNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
-      let lower = i == verticalNum - 1 ? "" : lifeGameState[i + 1][j];
-      let lowerRight =
+      const lower = i == verticalNum - 1 ? "" : lifeGameState[i + 1][j];
+      const lowerRight =
         i == verticalNum - 1 || j == horizonalNum - 1
           ? ""
           : lifeGameState[i + 1][j + 1];
       // 八近傍の状況をまとめた配列
-      let neighborhoods = [
+      const neighborhoods = [
         upperLeft,
         upper,
         upperRight,
@@ -91,7 +91,7 @@ const LifeGame = () => {
         lower,
         lowerRight,
       ];
-      let liveCellNum: number = neighborhoods.filter(
+      const liveCellNum: number = neighborhoods.filter(
         (neighborhood) => neighborhood == "●"
       ).length;
 
@@ -116,10 +116,10 @@ const LifeGame = () => {
   // ライフゲームの板を描写する
   const createLifeGameBoard = (step: number) => {
     // forで回すとき都度都度配列初期化する
-    let row = [];
+    const row = [];
     for (let i = 0; i < verticalNum; i++) {
       // forで回すとき都度都度配列初期化する
-      let square = [];
+      const square = [];
       for (let j = 0; j < horizonalNum; j++) {
         square.push(
           <button className="Square" key={j}>
