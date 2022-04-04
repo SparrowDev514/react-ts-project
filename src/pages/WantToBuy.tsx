@@ -24,8 +24,6 @@ const WantToBuy = () => {
     }
   };
 
-  const deleteWantTobuy = () => {};
-
   return (
     <div className="WantToBuy">
       ここに買いたい物リストを作るぞ.

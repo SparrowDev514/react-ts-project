@@ -1,20 +1,17 @@
 import { useState } from "react";
 
-const horizonalNum = 20;
-const verticalNum = 20;
-
 // ライフゲームの状況を保持する定数
 let lifeGameState: string[][] = [];
 const nextLifeGameState: string[][] = [];
 
 //最初に発生させる生命の割合
-const initialRate = 0.5;
+const initialRate = 0.3;
 
 // lifeGameStateを乱数で初期化
-const initializeState = () => {
-  for (let i = 0; i < verticalNum; i++) {
+const initializeState = (rowsNum: number) => {
+  for (let i = 0; i < rowsNum; i++) {
     const initialRow: string[] = [];
-    for (let j = 0; j < horizonalNum; j++) {
+    for (let j = 0; j < rowsNum; j++) {
       if (Math.random() > initialRate) {
         initialRow.push("");
       } else {
@@ -25,10 +22,10 @@ const initializeState = () => {
   }
   return lifeGameState;
 };
-const initializeNextState = () => {
-  for (let i = 0; i < verticalNum; i++) {
+const initializeNextState = (rowsNum: number) => {
+  for (let i = 0; i < rowsNum; i++) {
     const initialRow: string[] = [];
-    for (let j = 0; j < horizonalNum; j++) {
+    for (let j = 0; j < rowsNum; j++) {
       initialRow.push("");
     }
     nextLifeGameState.push(initialRow);
@@ -36,15 +33,11 @@ const initializeNextState = () => {
   return nextLifeGameState;
 };
 
-// // 初期化
-initializeState();
-initializeNextState();
-
 const sleep = (waitTime: number | undefined) =>
   new Promise((resolve) => setTimeout(resolve, waitTime));
 
 const LifeGame = () => {
-  //step
+  const [rowsNum, setRowsNum] = useState<number>(20);
   const [step, setStep] = useState<number>(0);
 
   //世代を進める
@@ -70,16 +63,14 @@ const LifeGame = () => {
       const upperLeft = i == 0 || j == 0 ? "" : lifeGameState[i - 1][j - 1];
       const upper = i == 0 ? "" : lifeGameState[i - 1][j];
       const upperRight =
-        i == 0 || j == horizonalNum - 1 ? "" : lifeGameState[i - 1][j + 1];
+        i == 0 || j == rowsNum - 1 ? "" : lifeGameState[i - 1][j + 1];
       const left = j == 0 ? "" : lifeGameState[i][j - 1];
-      const right = j == horizonalNum - 1 ? "" : lifeGameState[i][j + 1];
+      const right = j == rowsNum - 1 ? "" : lifeGameState[i][j + 1];
       const lowerLeft =
-        i == verticalNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
-      const lower = i == verticalNum - 1 ? "" : lifeGameState[i + 1][j];
+        i == rowsNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
+      const lower = i == rowsNum - 1 ? "" : lifeGameState[i + 1][j];
       const lowerRight =
-        i == verticalNum - 1 || j == horizonalNum - 1
-          ? ""
-          : lifeGameState[i + 1][j + 1];
+        i == rowsNum - 1 || j == rowsNum - 1 ? "" : lifeGameState[i + 1][j + 1];
       // 八近傍の状況をまとめた配列
       const neighborhoods = [
         upperLeft,
@@ -117,10 +108,10 @@ const LifeGame = () => {
   const createLifeGameBoard = (step: number) => {
     // forで回すとき都度都度配列初期化する
     const row = [];
-    for (let i = 0; i < verticalNum; i++) {
+    for (let i = 0; i < rowsNum; i++) {
       // forで回すとき都度都度配列初期化する
       const square = [];
-      for (let j = 0; j < horizonalNum; j++) {
+      for (let j = 0; j < rowsNum; j++) {
         square.push(
           <button className="Square" key={j}>
             {returnState(i, j, step)}
@@ -139,25 +130,14 @@ const LifeGame = () => {
     return row;
   };
 
-  // TODO: CSSを後で分離する;
-  const lifeGameStyle = {
-    display: "flex",
+  const handleRowsNumChange = (e: any) => {
+    setRowsNum(() => e.target.value);
   };
-  const lifeGameBoardStyle = {
-    padding: "10px",
-  };
-  const stepNumStyle = {
-    padding: "10px",
-  };
-  const nextStepButtonStyle = {
-    padding: "10px",
-    margin: "10px",
-  };
-  const autoStepButtonStyle = {
-    padding: "10px",
-    margin: "10px",
-  };
-  // TODO:オートの時 終わらないようなやり方を考える
+
+  // // 初期化
+  initializeState(rowsNum);
+  initializeNextState(rowsNum);
+
   return (
     <div className="lifeGame" style={lifeGameStyle}>
       <div className="lifeGameBoard" style={lifeGameBoardStyle}>
@@ -166,6 +146,25 @@ const LifeGame = () => {
       <div>
         <div className="stepNum" style={stepNumStyle}>
           第{step}世代
+        </div>
+        <div className="textFieldRows">
+          <input
+            type="number"
+            value={rowsNum}
+            onChange={handleRowsNumChange}
+            step="5"
+            min="5"
+            placeholder="辺のマス目を入力"
+          ></input>
+        </div>
+        <div className="textFieldInitRate">
+          <input
+            type="number"
+            step="10"
+            max="100"
+            min="0"
+            placeholder="初期生命の割合を入力"
+          ></input>
         </div>
         <button
           className="nextStepButton"
@@ -184,6 +183,25 @@ const LifeGame = () => {
       </div>
     </div>
   );
+};
+
+// TODO: CSSを後で分離する;
+const lifeGameStyle = {
+  display: "flex",
+};
+const lifeGameBoardStyle = {
+  padding: "10px",
+};
+const stepNumStyle = {
+  padding: "10px",
+};
+const nextStepButtonStyle = {
+  padding: "10px",
+  margin: "10px",
+};
+const autoStepButtonStyle = {
+  padding: "10px",
+  margin: "10px",
 };
 
 export default LifeGame;
