@@ -20,6 +20,7 @@ const initializeState = (rowsNum: number) => {
     }
     lifeGameState.push(initialRow);
   }
+
   return lifeGameState;
 };
 const initializeNextState = (rowsNum: number) => {
