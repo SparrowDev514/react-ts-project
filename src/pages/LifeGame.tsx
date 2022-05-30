@@ -2,6 +2,14 @@
 import React from "react";
 import { useState } from "react";
 
+interface StepProps {
+  step: number;
+}
+
+interface RowsNumProps {
+  rowsNum: number;
+}
+
 // state
 const [step, setStep] = useState<number>(0);
 const [rowsNum, setRowsNum] = useState<number>(20);
@@ -107,17 +115,22 @@ function createLifeGameBoard(step: number) {
 }
 
 // コンポーネント
-class CreateLifeGameBoard extends React.Component {
+class CreateLifeGameBoard extends React.Component<StepProps, {}> {
+  constructor(props: any) {
+    super(props);
+    console.log("CreateLifeGameBoard constructor", props);
+  }
+
   render() {
     return (
       <div className="lifeGameBoard" style={lifeGameBoardStyle}>
-        {createLifeGameBoard(this.state.step)}
+        {createLifeGameBoard(step)}
       </div>
     );
   }
 }
 
-class StepNum extends React.Component {
+class StepNum extends React.Component<StepProps, {}> {
   render() {
     return (
       <div className="stepNum" style={stepNumStyle}>
@@ -127,7 +140,7 @@ class StepNum extends React.Component {
   }
 }
 
-class TextFieldRows extends React.Component {
+class TextFieldRows extends React.Component<RowsNumProps, {}> {
   render() {
     return (
       <div className="textFieldRows">
@@ -182,11 +195,11 @@ function AutoStepButton() {
   );
 }
 
-class LifeGame extends React.Component {
+export default class LifeGame extends React.Component {
   render() {
     return (
-      <div>
-        <CreateLifeGameBoard />
+      <div className="lifeGame" style={lifeGameStyle}>
+        <CreateLifeGameBoard step={step} />
         <div>
           <StepNum step={step} />
           <TextFieldRows rowsNum={rowsNum} />
