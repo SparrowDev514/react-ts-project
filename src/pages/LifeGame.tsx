@@ -1,6 +1,5 @@
 // import
 import React from "react";
-import { useState } from "react";
 
 interface StepProps {
   step: number;
@@ -10,15 +9,47 @@ interface RowsNumProps {
   rowsNum: number;
 }
 
-// state
-const [step, setStep] = useState<number>(0);
-const [rowsNum, setRowsNum] = useState<number>(20);
+interface NextStep {
+  nextStep: any;
+}
 
 // グローバル変数
 let lifeGameState: string[][] = [];
 const nextLifeGameState: string[][] = [];
+const initialRate = 0.3;
+let rowsNum: number = 20;
 
 //　ロジック
+function initializeState(rowsNum: number) {
+  for (let i = 0; i < rowsNum; i++) {
+    const initialRow: string[] = [];
+    for (let j = 0; j < rowsNum; j++) {
+      if (Math.random() > initialRate) {
+        initialRow.push("");
+      } else {
+        initialRow.push("●");
+      }
+    }
+    lifeGameState.push(initialRow);
+  }
+
+  return lifeGameState;
+}
+
+function initializeNextState(rowsNum: number) {
+  for (let i = 0; i < rowsNum; i++) {
+    const initialRow: string[] = [];
+    for (let j = 0; j < rowsNum; j++) {
+      initialRow.push("");
+    }
+    nextLifeGameState.push(initialRow);
+  }
+  return nextLifeGameState;
+}
+
+initializeState(rowsNum);
+initializeNextState(rowsNum);
+
 function returnState(i: number, j: number, step: number) {
   if (step == 0) {
     return lifeGameState[i][j];
@@ -70,24 +101,19 @@ function returnState(i: number, j: number, step: number) {
 }
 
 function handleRowsNumChange(e: any) {
-  setRowsNum(() => e.target.value);
+  rowsNum = e.target.value;
 }
 
 function sleep(waitTime: number | undefined) {
   new Promise((resolve) => setTimeout(resolve, waitTime));
 }
 
-async function auto() {
-  for (let i = 0; i <= 10000; i++) {
-    await sleep(100);
-    setStep(i);
-  }
-}
-
-function nextState() {
-  const nextStep: number = step + 1;
-  setStep(nextStep);
-}
+// async function auto() {
+//   for (let i = 0; i <= 10000; i++) {
+//     await sleep(100);
+//     step = step + 1;
+//   }
+// }
 
 function createLifeGameBoard(step: number) {
   // forで回すとき都度都度配列初期化する
@@ -116,15 +142,10 @@ function createLifeGameBoard(step: number) {
 
 // コンポーネント
 class CreateLifeGameBoard extends React.Component<StepProps, {}> {
-  constructor(props: any) {
-    super(props);
-    console.log("CreateLifeGameBoard constructor", props);
-  }
-
   render() {
     return (
       <div className="lifeGameBoard" style={lifeGameBoardStyle}>
-        {createLifeGameBoard(step)}
+        {createLifeGameBoard(this.props.step)}
       </div>
     );
   }
@@ -134,7 +155,7 @@ class StepNum extends React.Component<StepProps, {}> {
   render() {
     return (
       <div className="stepNum" style={stepNumStyle}>
-        第{step}世代
+        第{this.props.step}世代
       </div>
     );
   }
@@ -171,41 +192,56 @@ function TextFieldInitRate() {
   );
 }
 
-function NextStepButton() {
-  return (
-    <button
-      className="nextStepButton"
-      style={nextStepButtonStyle}
-      onClick={nextState}
-    >
-      進める
-    </button>
-  );
+class NextStepButton extends React.Component<NextStep> {
+  render() {
+    console.log(this.props.nextStep);
+    return (
+      <button
+        className="nextStepButton"
+        style={nextStepButtonStyle}
+        onClick={this.props.nextStep}
+      >
+        進める
+      </button>
+    );
+  }
 }
 
-function AutoStepButton() {
-  return (
-    <button
-      className="autoStepButton"
-      onClick={auto}
-      style={autoStepButtonStyle}
-    >
-      オート
-    </button>
-  );
-}
+// function AutoStepButton() {
+//   return (
+//     <button
+//       className="autoStepButton"
+//       onClick={auto}
+//       style={autoStepButtonStyle}
+//     >
+//       オート
+//     </button>
+//   );
+// }
 
-export default class LifeGame extends React.Component {
+export default class LifeGame extends React.Component<{}, StepProps> {
+  constructor(props: object) {
+    super(props);
+    this.state = {
+      step: 0,
+    };
+  }
+
+  NextStep = () => {
+    let step = this.state.step + 1;
+    this.setState({ step: step });
+  };
+
   render() {
     return (
       <div className="lifeGame" style={lifeGameStyle}>
-        <CreateLifeGameBoard step={step} />
+        <CreateLifeGameBoard step={this.state.step} />
         <div>
-          <StepNum step={step} />
+          <StepNum step={this.state.step} />
           <TextFieldRows rowsNum={rowsNum} />
           <TextFieldInitRate />
-          <NextStepButton />
-          <AutoStepButton />
+          <NextStepButton nextStep={this.NextStep} />
+          {/* <AutoStepButton /> */}
         </div>
       </div>
     );
