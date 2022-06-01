@@ -17,9 +17,9 @@ interface NextStep {
 let lifeGameState: string[][] = [];
 const nextLifeGameState: string[][] = [];
 const initialRate = 0.3;
-let rowsNum: number = 20;
+let rowsNum = 20;
 
-//　ロジック
+// ロジック
 function initializeState(rowsNum: number) {
   for (let i = 0; i < rowsNum; i++) {
     const initialRow: string[] = [];
@@ -141,7 +141,7 @@ function createLifeGameBoard(step: number) {
 }
 
 // コンポーネント
-class CreateLifeGameBoard extends React.Component<StepProps, {}> {
+class CreateLifeGameBoard extends React.Component<StepProps> {
   render() {
     return (
       <div className="lifeGameBoard" style={lifeGameBoardStyle}>
@@ -151,7 +151,7 @@ class CreateLifeGameBoard extends React.Component<StepProps, {}> {
   }
 }
 
-class StepNum extends React.Component<StepProps, {}> {
+class StepNum extends React.Component<StepProps> {
   render() {
     return (
       <div className="stepNum" style={stepNumStyle}>
@@ -161,7 +161,7 @@ class StepNum extends React.Component<StepProps, {}> {
   }
 }
 
-class TextFieldRows extends React.Component<RowsNumProps, {}> {
+class TextFieldRows extends React.Component<RowsNumProps> {
   render() {
     return (
       <div className="textFieldRows">
@@ -228,7 +228,7 @@ export default class LifeGame extends React.Component<{}, StepProps> {
   }
 
   NextStep = () => {
-    let step = this.state.step + 1;
+    const step = this.state.step + 1;
     this.setState({ step: step });
   };
 
