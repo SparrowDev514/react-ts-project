@@ -10,11 +10,7 @@ interface RowsNumProps {
 }
 
 interface NextStep {
-  nextStep: any;
-}
-
-interface AutoStep {
-  autoStep: any;
+  nextStep: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 // グローバル変数
@@ -134,41 +130,35 @@ function createLifeGameBoard(step: number) {
 }
 
 // コンポーネント
-class CreateLifeGameBoard extends React.Component<StepProps> {
-  render() {
-    return (
-      <div className="lifeGameBoard" style={lifeGameBoardStyle}>
-        {createLifeGameBoard(this.props.step)}
-      </div>
-    );
-  }
+function CreateLifeGameBoard(props: StepProps) {
+  return (
+    <div className="lifeGameBoard" style={lifeGameBoardStyle}>
+      {createLifeGameBoard(props.step)}
+    </div>
+  );
 }
 
-class StepNum extends React.Component<StepProps> {
-  render() {
-    return (
-      <div className="stepNum" style={stepNumStyle}>
-        第{this.props.step}世代
-      </div>
-    );
-  }
+function StepNum(props: StepProps) {
+  return (
+    <div className="stepNum" style={stepNumStyle}>
+      第{props.step}世代
+    </div>
+  );
 }
 
-class TextFieldRows extends React.Component<RowsNumProps> {
-  render() {
-    return (
-      <div className="textFieldRows">
-        <input
-          type="number"
-          value={rowsNum}
-          onChange={handleRowsNumChange}
-          step="5"
-          min="5"
-          placeholder="辺のマス目を入力"
-        />
-      </div>
-    );
-  }
+function TextFieldRows(props: RowsNumProps) {
+  return (
+    <div className="textFieldRows">
+      <input
+        type="number"
+        value={rowsNum}
+        onChange={handleRowsNumChange}
+        step="5"
+        min="5"
+        placeholder="辺のマス目を入力"
+      />
+    </div>
+  );
 }
 
 function TextFieldInitRate() {
@@ -185,18 +175,16 @@ function TextFieldInitRate() {
   );
 }
 
-class NextStepButton extends React.Component<NextStep> {
-  render() {
-    return (
-      <button
-        className="nextStepButton"
-        style={nextStepButtonStyle}
-        onClick={this.props.nextStep}
-      >
-        進める
-      </button>
-    );
-  }
+function NextStepButton(props: NextStep) {
+  return (
+    <button
+      className="nextStepButton"
+      style={nextStepButtonStyle}
+      onClick={props.nextStep}
+    >
+      進める
+    </button>
+  );
 }
 
 export default class LifeGame extends React.Component<{}, StepProps> {
