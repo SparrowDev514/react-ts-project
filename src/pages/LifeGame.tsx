@@ -36,7 +36,7 @@ function initializeState(rowsNum: number) {
   return lifeGameState;
 }
 
-function initializeNextState(rowsNum: number) {
+const initializeNextState = (rowsNum: number) => {
   for (let i = 0; i < rowsNum; i++) {
     const initialRow: string[] = [];
     for (let j = 0; j < rowsNum; j++) {
@@ -45,12 +45,12 @@ function initializeNextState(rowsNum: number) {
     nextLifeGameState.push(initialRow);
   }
   return nextLifeGameState;
-}
+};
 
 initializeState(rowsNum);
 initializeNextState(rowsNum);
 
-function returnState(i: number, j: number, step: number) {
+const returnState = (i: number, j: number, step: number) => {
   if (step == 0) {
     return lifeGameState[i][j];
   } else {
@@ -98,13 +98,13 @@ function returnState(i: number, j: number, step: number) {
       return nextLifeGameState[i][j];
     }
   }
-}
+};
 
-function handleRowsNumChange(e: any) {
+const handleRowsNumChange = (e: any) => {
   rowsNum = e.target.value;
-}
+};
 
-function createLifeGameBoard(step: number) {
+const createLifeGameBoard = (step: number) => {
   // forで回すとき都度都度配列初期化する
   const row = [];
   for (let i = 0; i < rowsNum; i++) {
@@ -127,26 +127,26 @@ function createLifeGameBoard(step: number) {
     lifeGameState = nextLifeGameState;
   }
   return row;
-}
+};
 
 // コンポーネント
-function CreateLifeGameBoard(props: StepProps) {
+const CreateLifeGameBoard = (props: StepProps) => {
   return (
     <div className="lifeGameBoard" style={lifeGameBoardStyle}>
       {createLifeGameBoard(props.step)}
     </div>
   );
-}
+};
 
-function StepNum(props: StepProps) {
+const StepNum = (props: StepProps) => {
   return (
     <div className="stepNum" style={stepNumStyle}>
       第{props.step}世代
     </div>
   );
-}
+};
 
-function TextFieldRows(props: RowsNumProps) {
+const TextFieldRows = (props: RowsNumProps) => {
   return (
     <div className="textFieldRows">
       <input
@@ -159,9 +159,9 @@ function TextFieldRows(props: RowsNumProps) {
       />
     </div>
   );
-}
+};
 
-function TextFieldInitRate() {
+const TextFieldInitRate = () => {
   return (
     <div className="textFieldInitRate">
       <input
@@ -173,9 +173,9 @@ function TextFieldInitRate() {
       />
     </div>
   );
-}
+};
 
-function NextStepButton(props: NextStep) {
+const NextStepButton = (props: NextStep) => {
   return (
     <button
       className="nextStepButton"
@@ -185,7 +185,7 @@ function NextStepButton(props: NextStep) {
       進める
     </button>
   );
-}
+};
 
 export default class LifeGame extends React.Component<{}, StepProps> {
   constructor(props: object) {
