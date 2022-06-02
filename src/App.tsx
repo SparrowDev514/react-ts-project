@@ -1,8 +1,8 @@
 import "./App.css";
-import Nav from "./router/Nav";
+import RouteIndex from "./router/RouteIndex";
 
 const App = () => {
-  return <Nav />;
+  return <RouteIndex />;
 };
 
 export default App;
