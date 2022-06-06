@@ -100,8 +100,8 @@ const returnState = (i: number, j: number, step: number) => {
   }
 };
 
-const handleRowsNumChange = (e: any) => {
-  rowsNum = e.target.value;
+const handleRowsNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  rowsNum = e.target.valueAsNumber;
 };
 
 const createLifeGameBoard = (step: number) => {
@@ -187,7 +187,7 @@ const NextStepButton = (props: NextStep) => {
   );
 };
 
-export default class LifeGame extends React.Component<{}, StepProps> {
+export default class LifeGame extends React.Component<object, StepProps> {
   constructor(props: object) {
     super(props);
     this.state = {
@@ -229,7 +229,7 @@ const nextStepButtonStyle = {
   padding: "10px",
   margin: "10px",
 };
-const autoStepButtonStyle = {
-  padding: "10px",
-  margin: "10px",
-};
+// const autoStepButtonStyle = {
+//   padding: "10px",
+//   margin: "10px",
+// };
