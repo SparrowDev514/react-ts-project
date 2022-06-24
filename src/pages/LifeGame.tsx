@@ -1,8 +1,9 @@
 // import
 import React from "react";
 
-interface StepProps {
+interface BoardProps {
   step: number;
+  rowsNum: number;
 }
 
 interface RowsNumProps {
@@ -16,11 +17,11 @@ interface NextStep {
 // グローバル変数
 let lifeGameState: string[][] = [];
 const nextLifeGameState: string[][] = [];
-const initialRate = 0.3;
-let rowsNum = 20;
 
-// ロジック
-function initializeState(rowsNum: number) {
+// // ロジック
+const initializeState = (rowsNum: number) => {
+  const initialRate = 0.3;
+
   for (let i = 0; i < rowsNum; i++) {
     const initialRow: string[] = [];
     for (let j = 0; j < rowsNum; j++) {
@@ -34,7 +35,7 @@ function initializeState(rowsNum: number) {
   }
 
   return lifeGameState;
-}
+};
 
 const initializeNextState = (rowsNum: number) => {
   for (let i = 0; i < rowsNum; i++) {
@@ -46,9 +47,6 @@ const initializeNextState = (rowsNum: number) => {
   }
   return nextLifeGameState;
 };
-
-initializeState(rowsNum);
-initializeNextState(rowsNum);
 
 const returnState = (i: number, j: number, step: number) => {
   if (step == 0) {
@@ -187,11 +185,12 @@ const NextStepButton = (props: NextStep) => {
   );
 };
 
-export default class LifeGame extends React.Component<object, StepProps> {
+export default class LifeGame extends React.Component<object, BoardProps> {
   constructor(props: object) {
     super(props);
     this.state = {
       step: 0,
+      rowsNum: 20,
     };
   }
 
@@ -201,12 +200,15 @@ export default class LifeGame extends React.Component<object, StepProps> {
   };
 
   render() {
+    initializeState(this.state.rowsNum);
+    initializeNextState(this.state.rowsNum);
+
     return (
       <div className="lifeGame" style={lifeGameStyle}>
         <CreateLifeGameBoard step={this.state.step} />
         <div>
           <StepNum step={this.state.step} />
-          <TextFieldRows rowsNum={rowsNum} />
+          <TextFieldRows rowsNum={this.state.rowsNum} />
           <TextFieldInitRate />
           <NextStepButton nextStep={this.NextStep} />
         </div>
