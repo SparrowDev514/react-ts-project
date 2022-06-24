@@ -6,10 +6,6 @@ interface BoardProps {
   rowsNum: number;
 }
 
-interface RowsNumProps {
-  rowsNum: number;
-}
-
 interface NextStep {
   nextStep: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
@@ -48,8 +44,8 @@ const initializeNextState = (rowsNum: number) => {
   return nextLifeGameState;
 };
 
-const returnState = (i: number, j: number, step: number) => {
-  if (step == 0) {
+const returnState = (i: number, j: number, props: BoardProps) => {
+  if (props.step == 0) {
     return lifeGameState[i][j];
   } else {
     //１世代以降の処理
@@ -57,14 +53,16 @@ const returnState = (i: number, j: number, step: number) => {
     const upperLeft = i == 0 || j == 0 ? "" : lifeGameState[i - 1][j - 1];
     const upper = i == 0 ? "" : lifeGameState[i - 1][j];
     const upperRight =
-      i == 0 || j == rowsNum - 1 ? "" : lifeGameState[i - 1][j + 1];
+      i == 0 || j == props.rowsNum - 1 ? "" : lifeGameState[i - 1][j + 1];
     const left = j == 0 ? "" : lifeGameState[i][j - 1];
-    const right = j == rowsNum - 1 ? "" : lifeGameState[i][j + 1];
+    const right = j == props.rowsNum - 1 ? "" : lifeGameState[i][j + 1];
     const lowerLeft =
-      i == rowsNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
-    const lower = i == rowsNum - 1 ? "" : lifeGameState[i + 1][j];
+      i == props.rowsNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
+    const lower = i == props.rowsNum - 1 ? "" : lifeGameState[i + 1][j];
     const lowerRight =
-      i == rowsNum - 1 || j == rowsNum - 1 ? "" : lifeGameState[i + 1][j + 1];
+      i == props.rowsNum - 1 || j == props.rowsNum - 1
+        ? ""
+        : lifeGameState[i + 1][j + 1];
     // 八近傍の状況をまとめた配列
     const neighborhoods = [
       upperLeft,
@@ -102,16 +100,16 @@ const handleRowsNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   rowsNum = e.target.valueAsNumber;
 };
 
-const createLifeGameBoard = (step: number) => {
+const createLifeGameBoard = (props: BoardProps) => {
   // forで回すとき都度都度配列初期化する
   const row = [];
-  for (let i = 0; i < rowsNum; i++) {
+  for (let i = 0; i < props.rowsNum; i++) {
     // forで回すとき都度都度配列初期化する
     const square = [];
-    for (let j = 0; j < rowsNum; j++) {
+    for (let j = 0; j < props.rowsNum; j++) {
       square.push(
         <button className="Square" key={j}>
-          {returnState(i, j, step)}
+          {returnState(i, j, props)}
         </button>
       );
     }
@@ -121,22 +119,22 @@ const createLifeGameBoard = (step: number) => {
       </div>
     );
   }
-  if (step != 0) {
+  if (props.step != 0) {
     lifeGameState = nextLifeGameState;
   }
   return row;
 };
 
 // コンポーネント
-const CreateLifeGameBoard = (props: StepProps) => {
+const CreateLifeGameBoard = (props: BoardProps) => {
   return (
     <div className="lifeGameBoard" style={lifeGameBoardStyle}>
-      {createLifeGameBoard(props.step)}
+      {createLifeGameBoard(props)}
     </div>
   );
 };
 
-const StepNum = (props: StepProps) => {
+const StepNum = (props: { step: number }) => {
   return (
     <div className="stepNum" style={stepNumStyle}>
       第{props.step}世代
@@ -144,12 +142,12 @@ const StepNum = (props: StepProps) => {
   );
 };
 
-const TextFieldRows = (props: RowsNumProps) => {
+const TextFieldRows = (props: { rowsNum: number }) => {
   return (
     <div className="textFieldRows">
       <input
         type="number"
-        value={rowsNum}
+        value={props.rowsNum}
         onChange={handleRowsNumChange}
         step="5"
         min="5"
@@ -205,7 +203,10 @@ export default class LifeGame extends React.Component<object, BoardProps> {
 
     return (
       <div className="lifeGame" style={lifeGameStyle}>
-        <CreateLifeGameBoard step={this.state.step} />
+        <CreateLifeGameBoard
+          step={this.state.step}
+          rowsNum={this.state.rowsNum}
+        />
         <div>
           <StepNum step={this.state.step} />
           <TextFieldRows rowsNum={this.state.rowsNum} />
