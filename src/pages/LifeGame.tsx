@@ -10,6 +10,10 @@ interface NextStep {
   nextStep: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
+interface AutoStep {
+  autoStep: React.MouseEventHandler<HTMLButtonElement> | undefined;
+}
+
 // グローバル変数
 let lifeGameState: string[][] = [];
 const nextLifeGameState: string[][] = [];
@@ -142,6 +146,18 @@ const NextStepButton = (props: NextStep) => {
   );
 };
 
+const AutoStepButton = (props: AutoStep) => {
+  return (
+    <button
+      className="autoStepButton"
+      style={autoStepButtonStyle}
+      onClick={props.autoStep}
+    >
+      オート
+    </button>
+  );
+};
+
 export default class LifeGame extends React.Component<object, BoardProps> {
   constructor(props: object) {
     super(props);
@@ -154,6 +170,13 @@ export default class LifeGame extends React.Component<object, BoardProps> {
   NextStep = () => {
     const step = this.state.step + 1;
     this.setState({ step: step });
+    console.log(this.state.step);
+  };
+
+  AutoStep = () => {
+    for (let i = 1; i < 20000; i++) {
+      setTimeout(this.NextStep);
+    }
   };
 
   render() {
@@ -168,6 +191,7 @@ export default class LifeGame extends React.Component<object, BoardProps> {
         />
         <div>
           <NextStepButton nextStep={this.NextStep} />
+          <AutoStepButton autoStep={this.AutoStep} />
         </div>
       </div>
     );
@@ -188,7 +212,7 @@ const nextStepButtonStyle = {
   padding: "10px",
   margin: "10px",
 };
-// const autoStepButtonStyle = {
-//   padding: "10px",
-//   margin: "10px",
-// };
+const autoStepButtonStyle = {
+  padding: "10px",
+  margin: "10px",
+};
