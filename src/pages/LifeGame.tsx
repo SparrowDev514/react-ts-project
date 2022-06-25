@@ -96,10 +96,6 @@ const returnState = (i: number, j: number, props: BoardProps) => {
   }
 };
 
-const handleRowsNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  rowsNum = e.target.valueAsNumber;
-};
-
 const createLifeGameBoard = (props: BoardProps) => {
   // forで回すとき都度都度配列初期化する
   const row = [];
@@ -130,43 +126,6 @@ const CreateLifeGameBoard = (props: BoardProps) => {
   return (
     <div className="lifeGameBoard" style={lifeGameBoardStyle}>
       {createLifeGameBoard(props)}
-    </div>
-  );
-};
-
-const StepNum = (props: { step: number }) => {
-  return (
-    <div className="stepNum" style={stepNumStyle}>
-      第{props.step}世代
-    </div>
-  );
-};
-
-const TextFieldRows = (props: { rowsNum: number }) => {
-  return (
-    <div className="textFieldRows">
-      <input
-        type="number"
-        value={props.rowsNum}
-        onChange={handleRowsNumChange}
-        step="5"
-        min="5"
-        placeholder="辺のマス目を入力"
-      />
-    </div>
-  );
-};
-
-const TextFieldInitRate = () => {
-  return (
-    <div className="textFieldInitRate">
-      <input
-        type="number"
-        step="10"
-        max="100"
-        min="0"
-        placeholder="初期生命の割合を入力"
-      />
     </div>
   );
 };
@@ -208,9 +167,6 @@ export default class LifeGame extends React.Component<object, BoardProps> {
           rowsNum={this.state.rowsNum}
         />
         <div>
-          <StepNum step={this.state.step} />
-          <TextFieldRows rowsNum={this.state.rowsNum} />
-          <TextFieldInitRate />
           <NextStepButton nextStep={this.NextStep} />
         </div>
       </div>
