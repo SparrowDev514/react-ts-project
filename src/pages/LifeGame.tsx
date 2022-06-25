@@ -4,6 +4,8 @@ import React from "react";
 interface BoardProps {
   step: number;
   rowsNum: number;
+  lifeGameState: string[][];
+  nextLifeGameState: string[][];
 }
 
 interface NextStep {
@@ -14,59 +16,25 @@ interface AutoStep {
   autoStep: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
-// グローバル変数
-let lifeGameState: string[][] = [];
-const nextLifeGameState: string[][] = [];
-
-// // ロジック
-const initializeState = (rowsNum: number) => {
-  const initialRate = 0.3;
-
-  for (let i = 0; i < rowsNum; i++) {
-    const initialRow: string[] = [];
-    for (let j = 0; j < rowsNum; j++) {
-      if (Math.random() > initialRate) {
-        initialRow.push("");
-      } else {
-        initialRow.push("●");
-      }
-    }
-    lifeGameState.push(initialRow);
-  }
-
-  return lifeGameState;
-};
-
-const initializeNextState = (rowsNum: number) => {
-  for (let i = 0; i < rowsNum; i++) {
-    const initialRow: string[] = [];
-    for (let j = 0; j < rowsNum; j++) {
-      initialRow.push("");
-    }
-    nextLifeGameState.push(initialRow);
-  }
-  return nextLifeGameState;
-};
-
 const returnState = (i: number, j: number, props: BoardProps) => {
   if (props.step == 0) {
-    return lifeGameState[i][j];
+    return props.lifeGameState[i][j];
   } else {
     //１世代以降の処理
     // 八近傍の状況
-    const upperLeft = i == 0 || j == 0 ? "" : lifeGameState[i - 1][j - 1];
-    const upper = i == 0 ? "" : lifeGameState[i - 1][j];
+    const upperLeft = i == 0 || j == 0 ? "" : props.lifeGameState[i - 1][j - 1];
+    const upper = i == 0 ? "" : props.lifeGameState[i - 1][j];
     const upperRight =
-      i == 0 || j == props.rowsNum - 1 ? "" : lifeGameState[i - 1][j + 1];
-    const left = j == 0 ? "" : lifeGameState[i][j - 1];
-    const right = j == props.rowsNum - 1 ? "" : lifeGameState[i][j + 1];
+      i == 0 || j == props.rowsNum - 1 ? "" : props.lifeGameState[i - 1][j + 1];
+    const left = j == 0 ? "" : props.lifeGameState[i][j - 1];
+    const right = j == props.rowsNum - 1 ? "" : props.lifeGameState[i][j + 1];
     const lowerLeft =
-      i == props.rowsNum - 1 || j == 0 ? "" : lifeGameState[i + 1][j - 1];
-    const lower = i == props.rowsNum - 1 ? "" : lifeGameState[i + 1][j];
+      i == props.rowsNum - 1 || j == 0 ? "" : props.lifeGameState[i + 1][j - 1];
+    const lower = i == props.rowsNum - 1 ? "" : props.lifeGameState[i + 1][j];
     const lowerRight =
       i == props.rowsNum - 1 || j == props.rowsNum - 1
         ? ""
-        : lifeGameState[i + 1][j + 1];
+        : props.lifeGameState[i + 1][j + 1];
     // 八近傍の状況をまとめた配列
     const neighborhoods = [
       upperLeft,
@@ -82,20 +50,20 @@ const returnState = (i: number, j: number, props: BoardProps) => {
       (neighborhood) => neighborhood == "●"
     ).length;
 
-    if (lifeGameState[i][j] == "" && liveCellNum == 3) {
-      nextLifeGameState[i][j] = "●";
+    if (props.lifeGameState[i][j] == "" && liveCellNum == 3) {
+      props.nextLifeGameState[i][j] = "●";
       return "●";
-    } else if (lifeGameState[i][j] == "●") {
+    } else if (props.lifeGameState[i][j] == "●") {
       if (liveCellNum == 2 || liveCellNum == 3) {
-        nextLifeGameState[i][j] = "●";
+        props.nextLifeGameState[i][j] = "●";
         return "●";
       }
       if (liveCellNum <= 1 || liveCellNum >= 4) {
-        nextLifeGameState[i][j] = "";
+        props.nextLifeGameState[i][j] = "";
         return "";
       }
     } else {
-      return nextLifeGameState[i][j];
+      return props.nextLifeGameState[i][j];
     }
   }
 };
@@ -120,7 +88,7 @@ const createLifeGameBoard = (props: BoardProps) => {
     );
   }
   if (props.step != 0) {
-    lifeGameState = nextLifeGameState;
+    Object.assign(props.lifeGameState, props.nextLifeGameState);
   }
   return row;
 };
@@ -163,14 +131,15 @@ export default class LifeGame extends React.Component<object, BoardProps> {
     super(props);
     this.state = {
       step: 0,
-      rowsNum: 20,
+      rowsNum: 5,
+      lifeGameState: [],
+      nextLifeGameState: [],
     };
   }
 
   NextStep = () => {
     const step = this.state.step + 1;
     this.setState({ step: step });
-    console.log(this.state.step);
   };
 
   AutoStep = () => {
@@ -180,14 +149,36 @@ export default class LifeGame extends React.Component<object, BoardProps> {
   };
 
   render() {
-    initializeState(this.state.rowsNum);
-    initializeNextState(this.state.rowsNum);
+    // // ロジック
+    const initialRate = 0.3;
+
+    for (let i = 0; i < this.state.rowsNum; i++) {
+      const initialRow: string[] = [];
+      for (let j = 0; j < this.state.rowsNum; j++) {
+        if (Math.random() > initialRate) {
+          initialRow.push("");
+        } else {
+          initialRow.push("●");
+        }
+      }
+      this.state.lifeGameState.push(initialRow);
+    }
+
+    for (let i = 0; i < this.state.rowsNum; i++) {
+      const initialRow: string[] = [];
+      for (let j = 0; j < this.state.rowsNum; j++) {
+        initialRow.push("");
+      }
+      this.state.nextLifeGameState.push(initialRow);
+    }
 
     return (
       <div className="lifeGame" style={lifeGameStyle}>
         <CreateLifeGameBoard
           step={this.state.step}
           rowsNum={this.state.rowsNum}
+          lifeGameState={this.state.lifeGameState}
+          nextLifeGameState={this.state.nextLifeGameState}
         />
         <div>
           <NextStepButton nextStep={this.NextStep} />
