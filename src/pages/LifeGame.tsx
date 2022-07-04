@@ -299,17 +299,17 @@ const LifeGame = () => {
     );
   };
 
-  const AutoStepButton = () => {
-    return (
-      <button
-        className="autoStepButton"
-        style={stepButtonStyle}
-        onClick={autoStep}
-      >
-        オート
-      </button>
-    );
-  };
+  // const AutoStepButton = () => {
+  //   return (
+  //     <button
+  //       className="autoStepButton"
+  //       style={stepButtonStyle}
+  //       onClick={autoStep}
+  //     >
+  //       オート
+  //     </button>
+  //   );
+  // };
 
   // CSS
   const lifeGameStyle = {
@@ -332,7 +332,7 @@ const LifeGame = () => {
         <InitialRateField />
         <ColumnLineNumField />
         <NextStepButton />
-        <AutoStepButton />
+        {/* <AutoStepButton /> */}
       </div>
     </div>
   );
