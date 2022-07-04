@@ -1,5 +1,5 @@
 // import
-import React, { cloneElement, useState } from "react";
+import React, { useState } from "react";
 
 interface CellProps {
   column: number;
@@ -13,13 +13,15 @@ interface locationProps {
 }
 
 const LifeGame = () => {
-  const [columnLineNum, setColumnLineNum] = useState<number>(5);
+  const [columnLineNum, setColumnLineNum] = useState<number>(20);
+  const [initialRate, setInitialRate] = useState<number>(0.5);
   const [generation, setGeneration] = useState<number>(1);
-  const [board, setBoard] = useState<CellProps[][]>(initializeBoard);
+  const [board, setBoard] = useState<CellProps[][]>(
+    updateBoard(initialRate, columnLineNum)
+  );
 
-  // 初期状態を定義する
-  function initializeBoard() {
-    const initialRate = 0.5;
+  // ボードを更新する
+  function updateBoard(initialRate: number, columnLineNum: number) {
     const cellBoard: CellProps[][] = [];
     for (let i = 0; i < columnLineNum; i++) {
       const cellColumn: CellProps[] = [];
@@ -39,7 +41,6 @@ const LifeGame = () => {
     }
     return cellBoard;
   }
-
   // isSueviveフラグを更新する
   const setIsSurvive = () => {
     board.map((column) => {
@@ -66,8 +67,6 @@ const LifeGame = () => {
         }
       });
     });
-
-    console.log(board);
   };
 
   // cellの周囲のcellの情報を得る
@@ -206,8 +205,45 @@ const LifeGame = () => {
 
   //世代を一つ進める
   const nextStep = () => {
-    setGeneration(generation + 1);
-    console.log(generation);
+    setGeneration(() => generation + 1);
+    const newBoard = board;
+    newBoard.map((column) => {
+      column.map((cell) => {
+        board[cell["column"]][cell["line"]]["isLive"] =
+          board[cell["column"]][cell["line"]]["isSurvive"];
+      });
+    });
+    setBoard([...newBoard]);
+  };
+
+  const autoStep = () => {
+    for (let i = 0; i < 100; i++) {
+      console.log(i);
+      nextStep;
+      updateBoard(initialRate, columnLineNum);
+    }
+  };
+
+  //初期状態の割合を変える
+  const handleInitialRateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const cellBoard = updateBoard(event.target.valueAsNumber, columnLineNum);
+    // stateの更新
+    setGeneration(1);
+    setInitialRate(event.target.valueAsNumber);
+    setBoard([...cellBoard]);
+  };
+
+  // 行数列数を変える
+  const handleColumnLineNumChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const cellBoard = updateBoard(initialRate, event.target.valueAsNumber);
+    // stateの更新
+    setGeneration(1);
+    setColumnLineNum(event.target.valueAsNumber);
+    setBoard([...cellBoard]);
   };
 
   //コンポーネント
@@ -219,14 +255,58 @@ const LifeGame = () => {
     );
   };
 
+  const InitialRateField = () => {
+    return (
+      <div>
+        <input
+          type="number"
+          step="0.1"
+          defaultValue={initialRate}
+          className="initialRateField"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleInitialRateChange(e)
+          }
+        />
+      </div>
+    );
+  };
+
+  const ColumnLineNumField = () => {
+    return (
+      <div>
+        <input
+          type="number"
+          step="1"
+          defaultValue={columnLineNum}
+          className="columnLineNumField"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleColumnLineNumChange(e)
+          }
+        />
+      </div>
+    );
+  };
+
   const NextStepButton = () => {
     return (
       <button
         className="nextStepButton"
-        style={nextStepButtonStyle}
+        style={stepButtonStyle}
         onClick={nextStep}
       >
         進める
+      </button>
+    );
+  };
+
+  const AutoStepButton = () => {
+    return (
+      <button
+        className="autoStepButton"
+        style={stepButtonStyle}
+        onClick={autoStep}
+      >
+        オート
       </button>
     );
   };
@@ -238,7 +318,7 @@ const LifeGame = () => {
   const lifeGameBoardStyle = {
     padding: "10px",
   };
-  const nextStepButtonStyle = {
+  const stepButtonStyle = {
     padding: "10px",
     margin: "10px",
   };
@@ -246,9 +326,13 @@ const LifeGame = () => {
   return (
     <div className="lifeGame" style={lifeGameStyle}>
       <CreateLifeGameBoard />
+      {console.log("render")}
       <div>
+        <div>{generation}世代目</div>
+        <InitialRateField />
+        <ColumnLineNumField />
         <NextStepButton />
-        {/* <AutoStepButton /> */}
+        <AutoStepButton />
       </div>
     </div>
   );
