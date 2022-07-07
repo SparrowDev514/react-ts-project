@@ -1,5 +1,6 @@
 // import
 import React, { useState } from "react";
+// import CreateLifeGameBoard from "../component/CreateLifeGameBoard";
 
 interface CellProps {
   column: number;
@@ -182,7 +183,7 @@ const LifeGame = () => {
     }
   };
   // ボードのHTMLを返す
-  const returnBoard = () => {
+  const returnBoardHtml = () => {
     const column = [];
     for (let i = 0; i < columnLineNum; i++) {
       const square = [];
@@ -202,10 +203,11 @@ const LifeGame = () => {
     setIsSurvive();
     return column;
   };
-
   //世代を一つ進める
-  const nextStep = () => {
-    setGeneration(() => generation + 1);
+  const nextStep = async (isRecursion: boolean = false) => {
+    let nextGen: number = generation + 1;
+    setGeneration(nextGen);
+
     const newBoard = board;
     newBoard.map((column) => {
       column.map((cell) => {
@@ -214,14 +216,11 @@ const LifeGame = () => {
       });
     });
     setBoard([...newBoard]);
-  };
 
-  const autoStep = () => {
-    for (let i = 0; i < 100; i++) {
-      console.log(i);
-      nextStep;
-      updateBoard(initialRate, columnLineNum);
-    }
+    //ここから再帰の処理
+    const sleep = () => new Promise((resolve) => setTimeout(resolve, 200));
+    await sleep();
+    if (isRecursion) nextStep(true);
   };
 
   //初期状態の割合を変える
@@ -250,7 +249,7 @@ const LifeGame = () => {
   const CreateLifeGameBoard = () => {
     return (
       <div className="lifeGameBoard" style={lifeGameBoardStyle}>
-        {returnBoard()}
+        {returnBoardHtml()}
       </div>
     );
   };
@@ -292,24 +291,24 @@ const LifeGame = () => {
       <button
         className="nextStepButton"
         style={stepButtonStyle}
-        onClick={nextStep}
+        onClick={() => nextStep()}
       >
         進める
       </button>
     );
   };
 
-  // const AutoStepButton = () => {
-  //   return (
-  //     <button
-  //       className="autoStepButton"
-  //       style={stepButtonStyle}
-  //       onClick={autoStep}
-  //     >
-  //       オート
-  //     </button>
-  //   );
-  // };
+  const AutoStepButton = () => {
+    return (
+      <button
+        className="autoStepButton"
+        style={stepButtonStyle}
+        onClick={() => nextStep(true)}
+      >
+        オート
+      </button>
+    );
+  };
 
   // CSS
   const lifeGameStyle = {
@@ -326,13 +325,12 @@ const LifeGame = () => {
   return (
     <div className="lifeGame" style={lifeGameStyle}>
       <CreateLifeGameBoard />
-      {console.log("render")}
       <div>
         <div>{generation}世代目</div>
         <InitialRateField />
         <ColumnLineNumField />
         <NextStepButton />
-        {/* <AutoStepButton /> */}
+        <AutoStepButton />
       </div>
     </div>
   );
