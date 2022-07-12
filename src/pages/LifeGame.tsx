@@ -1,6 +1,5 @@
 // import
 import React, { useState } from "react";
-// import CreateLifeGameBoard from "../component/CreateLifeGameBoard";
 
 interface CellProps {
   column: number;
@@ -203,11 +202,9 @@ const LifeGame = () => {
     setIsSurvive();
     return column;
   };
+
   //世代を一つ進める
   const nextStep = async (isRecursion: boolean = false) => {
-    let nextGen: number = generation + 1;
-    setGeneration(nextGen);
-
     const newBoard = board;
     newBoard.map((column) => {
       column.map((cell) => {
@@ -218,8 +215,10 @@ const LifeGame = () => {
     setBoard([...newBoard]);
 
     //ここから再帰の処理
-    const sleep = () => new Promise((resolve) => setTimeout(resolve, 200));
+    const sleep = () => new Promise((resolve) => setTimeout(resolve, 1));
     await sleep();
+    setGeneration(1 + generation);
+    console.log(generation);
     if (isRecursion) nextStep(true);
   };
 
@@ -246,7 +245,7 @@ const LifeGame = () => {
   };
 
   //コンポーネント
-  const CreateLifeGameBoard = () => {
+  const LifeGameBoard = () => {
     return (
       <div className="lifeGameBoard" style={lifeGameBoardStyle}>
         {returnBoardHtml()}
@@ -324,7 +323,7 @@ const LifeGame = () => {
 
   return (
     <div className="lifeGame" style={lifeGameStyle}>
-      <CreateLifeGameBoard />
+      <LifeGameBoard />
       <div>
         <div>{generation}世代目</div>
         <InitialRateField />
