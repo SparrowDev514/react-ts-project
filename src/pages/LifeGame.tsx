@@ -19,6 +19,7 @@ const LifeGame = () => {
   const [board, setBoard] = useState<CellProps[][]>(
     updateBoard(initialRate, columnLineNum)
   );
+  const [isTextActive, setIsTextActive] = useState<boolean>(true);
 
   // ボードを更新する
   function updateBoard(initialRate: number, columnLineNum: number) {
@@ -205,6 +206,7 @@ const LifeGame = () => {
 
   //世代を一つ進める
   const nextStep = async (isRecursion: boolean = false) => {
+    if (isRecursion) setIsTextActive(false);
     const newBoard = board;
     newBoard.map((column) => {
       column.map((cell) => {
@@ -218,7 +220,6 @@ const LifeGame = () => {
     const sleep = () => new Promise((resolve) => setTimeout(resolve, 1));
     await sleep();
     setGeneration(1 + generation);
-    console.log(generation);
     if (isRecursion) nextStep(true);
   };
 
@@ -246,11 +247,7 @@ const LifeGame = () => {
 
   //コンポーネント
   const LifeGameBoard = () => {
-    return (
-      <div className="lifeGameBoard" style={lifeGameBoardStyle}>
-        {returnBoardHtml()}
-      </div>
-    );
+    return <div className="LifeGameBoard">{returnBoardHtml()}</div>;
   };
 
   const InitialRateField = () => {
@@ -260,7 +257,8 @@ const LifeGame = () => {
           type="number"
           step="0.1"
           defaultValue={initialRate}
-          className="initialRateField"
+          className="InitialRateField"
+          disabled={!isTextActive}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleInitialRateChange(e)
           }
@@ -276,7 +274,8 @@ const LifeGame = () => {
           type="number"
           step="1"
           defaultValue={columnLineNum}
-          className="columnLineNumField"
+          className="ColumnLineNumField"
+          disabled={!isTextActive}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleColumnLineNumChange(e)
           }
@@ -287,11 +286,7 @@ const LifeGame = () => {
 
   const NextStepButton = () => {
     return (
-      <button
-        className="nextStepButton"
-        style={stepButtonStyle}
-        onClick={() => nextStep()}
-      >
+      <button className="NextStepButton" onClick={() => nextStep()}>
         進める
       </button>
     );
@@ -299,26 +294,10 @@ const LifeGame = () => {
 
   const AutoStepButton = () => {
     return (
-      <button
-        className="autoStepButton"
-        style={stepButtonStyle}
-        onClick={() => nextStep(true)}
-      >
+      <button className="AutoStepButton" onClick={() => nextStep(true)}>
         オート
       </button>
     );
-  };
-
-  // CSS
-  const lifeGameStyle = {
-    display: "flex",
-  };
-  const lifeGameBoardStyle = {
-    padding: "10px",
-  };
-  const stepButtonStyle = {
-    padding: "10px",
-    margin: "10px",
   };
 
   return (
@@ -330,7 +309,6 @@ const LifeGame = () => {
         <NextStepButton />
         <AutoStepButton />
       </div>
-
       <div>
         <LifeGameBoard />
       </div>
