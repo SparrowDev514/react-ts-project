@@ -322,14 +322,17 @@ const LifeGame = () => {
   };
 
   return (
-    <div className="lifeGame" style={lifeGameStyle}>
-      <LifeGameBoard />
+    <div className="LifeGame">
       <div>
         <div>{generation}世代目</div>
         <InitialRateField />
         <ColumnLineNumField />
         <NextStepButton />
         <AutoStepButton />
+      </div>
+
+      <div>
+        <LifeGameBoard />
       </div>
     </div>
   );
