@@ -17,9 +17,6 @@ const PageList = () => {
           <li>
             <Link to="/lifeGame">LifeGame</Link>
           </li>
-          <li>
-            <Link to="/cardGameMemo">CardGameMemo</Link>
-          </li>
         </ul>
       </nav>
       <hr />
